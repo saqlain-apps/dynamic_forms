@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558958962928",
+    "project_id": "polaris-dynamic-form-b8f13",
+    "storage_bucket": "polaris-dynamic-form-b8f13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558958962928:android:a8948a748f98a73e347a35",
+        "android_client_info": {
+          "package_name": "com.polaris.dynamic_form"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmEpHA6VHZZLC2UAsQA5ZoMW2FsUNwXY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

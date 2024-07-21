@@ -1,0 +1,65 @@
+name: dynamic_form
+description: "Polaris Dynamic Form"
+publish_to: 'none'
+
+internal_path_api: lib/repositories/api_repository/apis
+internal_path_controller: lib/controllers
+internal_path_screen: lib/user_interface/screens
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  async: ^2.11.0
+  cached_network_image: ^3.3.1
+  cross_file: ^0.3.4+1
+  cupertino_icons: ^1.0.6
+  flutter_bloc: ^8.1.5
+  flutter_svg: ^2.0.10+1
+  get_it: ^7.6.7
+  http: ^1.2.1
+  http_parser: ^4.0.2
+  image_picker: ^1.1.0
+  intl: ^0.19.0
+  mime: ^1.0.5
+  permission_handler: ^11.3.1
+  shared_preferences: ^2.2.2
+  universal_html: ^2.2.4
+  firebase_core: ^3.2.0
+  firebase_storage: ^12.1.1
+  hive_flutter: ^1.1.0
+  connectivity_plus: ^6.0.3
+  flutter_background_service: ^5.0.6
+  path_provider: ^2.1.3
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  test: ^1.24.9
+  flutter_lints: ^4.0.0
+  intl_utils: ^2.8.7
+  bloc_test: ^9.1.7
+
+
+flutter:
+  uses-material-design: true
+
+flutter_intl:
+  enabled: true
+  class_name: AppStrings
+  arb_dir: lib/utils/app_helpers/app_strings/arb
+  output_dir: lib/utils/app_helpers/app_strings
+  main_locale: en
+
+  
