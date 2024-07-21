@@ -1,0 +1,8 @@
+{
+    "@@locale": "en",
+    "appName": "Dynamic Form",
+    "@_EXCEPTIONS": {},
+    "exceptionSocket": "Please check your internet connection",
+    "exceptionTimeout": "Request timed out. Please try again later",
+    "exception": "Unexpected Error"
+}
