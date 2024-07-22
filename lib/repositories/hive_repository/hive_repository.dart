@@ -1,29 +1,20 @@
-import 'package:dynamic_form/_libraries/_interfaces/base_repository.dart';
+import 'package:dynamic_form/_libraries/hive_storage/hive_box.dart';
+import 'package:dynamic_form/_libraries/hive_storage/hive_storage.dart';
+import 'package:dynamic_form/_libraries/hive_storage/hive_type_adapter.dart';
 import 'package:dynamic_form/models/form_model/submitted_form_model.dart';
-import 'package:dynamic_form/utils/hive_type_adapter.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-class HiveRepository implements BaseRepository {
-  HiveRepository(this.hive);
-  final HiveInterface hive;
+class HiveRepository extends HiveStorage {
+  HiveRepository(super.hive);
 
-  Future<void> init() async {
-    await hive.initFlutter();
-    _registerAdapters();
-    await initBoxes();
-  }
-
-  void _registerAdapters() {
-    hive.registerAdapter(xFileAdapter);
-    hive.registerAdapter(submittedFormAdapter);
-  }
-
-  Future<void> initBoxes() async {
-    submittedForms = await hive.openBox("submittedForms");
-  }
-
-  late Box<SubmittedFormModel> submittedForms;
+  late HiveBox<SubmittedFormModel> submittedForms = HiveBox(
+    hive,
+    "submittedForms",
+    adapter: const HiveDataAdapter<SubmittedFormModel>(
+      typeId: 1,
+      fromMap: SubmittedFormModel.fromMap,
+    ),
+  );
 
   late final HiveTypeAdapter<XFile> xFileAdapter = HiveCustomAdapter<XFile>(
     typeId: 0,
@@ -39,13 +30,11 @@ class HiveRepository implements BaseRepository {
     },
   );
 
-  late final HiveTypeAdapter<SubmittedFormModel> submittedFormAdapter =
-      const HiveDataAdapter<SubmittedFormModel>(
-    typeId: 1,
-    fromMap: SubmittedFormModel.fromMap,
-  );
+  @override
+  List<HiveBox> get boxes => [submittedForms];
 
-  Future<void> dispose() async {
-    await submittedForms.close();
+  @override
+  void registerAdapters() {
+    hive.registerAdapter(xFileAdapter);
   }
 }

@@ -7,7 +7,6 @@ class GetFormDataApi extends Api {
   const GetFormDataApi(super.repository);
 
   Future<FormModel?> call() async {
-    return FormModel.fromMap(sample());
     var res = await raw();
     return properResponse<FormModel>(
       res,
