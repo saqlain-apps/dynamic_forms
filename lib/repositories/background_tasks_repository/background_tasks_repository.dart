@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:dynamic_form/_libraries/_interfaces/base_repository.dart';
 import 'package:dynamic_form/controllers/app/app_controller.dart';
@@ -28,13 +27,13 @@ class BackgroundTasksRepository implements BaseRepository {
 
   @pragma('vm:entry-point')
   static FutureOr<bool> iosBackground(ServiceInstance service) async {
-    DartPluginRegistrant.ensureInitialized();
+    // DartPluginRegistrant.ensureInitialized();
     return true;
   }
 
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
-    DartPluginRegistrant.ensureInitialized();
+    // DartPluginRegistrant.ensureInitialized();
     final DependencyHandler dependencyHandler = DependencyHandler(
         dependencies: DependencyManager.buildDependencies()..removeLast());
 

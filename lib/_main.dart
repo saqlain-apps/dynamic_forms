@@ -13,6 +13,7 @@ class DynamicForms extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AppController(),
+      lazy: false,
       child: const App(),
     );
   }

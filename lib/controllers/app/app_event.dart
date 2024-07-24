@@ -8,6 +8,10 @@ class AppInitialEvent extends AppEvent {
   const AppInitialEvent();
 }
 
+class AppInitializeHiveEvent extends AppEvent {
+  const AppInitializeHiveEvent();
+}
+
 class AppNetworkChangeEvent extends AppEvent {
   const AppNetworkChangeEvent();
 }

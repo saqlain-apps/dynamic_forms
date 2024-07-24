@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dynamic_form/models/form_model/fields/form_capture_images_field_model.dart';
 import 'package:dynamic_form/models/form_model/submitted_form_model.dart';
 import 'package:dynamic_form/repositories/api_repository/api_repository.dart';
+import 'package:dynamic_form/repositories/background_tasks_repository/background_tasks_repository.dart';
 import 'package:dynamic_form/repositories/hive_repository/hive_repository.dart';
 import 'package:dynamic_form/repositories/storage_repository/storage_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ class AppController extends Bloc<AppEvent, AppState> {
     on<AppNetworkChangeEvent>(networkChange);
     on<AppSubmitFormEvent>(submitFormHandler);
     on<AppUploadFormEvent>(uploadFormHandler);
+    on<AppInitializeHiveEvent>(initializeHive);
 
     _init();
   }
@@ -32,10 +34,34 @@ class AppController extends Bloc<AppEvent, AppState> {
   StreamSubscription<List<ConnectivityResult>>? sub;
 
   void _init() {
+    getit.get<BackgroundTasksRepository>().init();
     add(const AppNetworkChangeEvent());
     sub = Connectivity().onConnectivityChanged.listen((event) {
       add(const AppNetworkChangeEvent());
     });
+  }
+
+  FutureOr<void> initializeHive(
+    AppInitializeHiveEvent event,
+    Emitter<AppState> emit,
+  ) async {
+    final hive = HiveRepository.find();
+    if (hive.isInitialized) return;
+
+    try {
+      emit(state.loading(event));
+      await hive.init();
+      emit(state.copyWith(
+        event: event,
+        eventStatus: state.updateStatus(event, GenericStatus.success),
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        event: event,
+        eventStatus: state.updateStatus(event, GenericStatus.failure),
+        message: e.toString(),
+      ));
+    }
   }
 
   FutureOr<void> networkChange(
@@ -45,7 +71,7 @@ class AppController extends Bloc<AppEvent, AppState> {
     try {
       emit(state.loading(event));
       final isConnected = await checkInternet();
-      if (isConnected) {
+      if (isConnected && HiveRepository.find().isInitialized) {
         for (var form in formsToBeUploaded(state.submittedForms)) {
           add(AppUploadFormEvent(form));
         }
@@ -56,7 +82,6 @@ class AppController extends Bloc<AppEvent, AppState> {
         isConnected: isConnected,
       ));
     } catch (e) {
-      print(e);
       emit(state.copyWith(
         event: event,
         eventStatus: state.updateStatus(event, GenericStatus.failure),
@@ -133,7 +158,7 @@ class AppController extends Bloc<AppEvent, AppState> {
   }
 
   static Future<void> putToDB(SubmittedFormModel form) async {
-    var hiveRepo = getit.get<HiveRepository>();
+    var hiveRepo = HiveRepository.find();
     var box = hiveRepo.submittedForms;
     await box.put(form.id, form);
     await box.flush();

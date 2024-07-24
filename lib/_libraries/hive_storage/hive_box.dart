@@ -14,6 +14,7 @@ class HiveBox<T> implements Box<T> {
   final String name;
 
   Box<T>? _box;
+  Box<T>? get maybeBox => _box;
   Box<T> get box {
     if (_box == null) {
       throw Exception("Box $name is not initialized."

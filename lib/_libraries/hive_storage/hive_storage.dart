@@ -3,10 +3,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_box.dart';
 
 class HiveStorage {
-  const HiveStorage(this.hive);
+  HiveStorage(this.hive);
   final HiveInterface hive;
 
   List<HiveBox> get boxes => [];
+  bool isInitialized = false;
 
   void registerAdapters() {}
 
@@ -14,6 +15,7 @@ class HiveStorage {
     await hive.initFlutter();
     registerAdapters();
     await initBoxes();
+    isInitialized = true;
   }
 
   Future<void> initBoxes() async {

@@ -55,19 +55,11 @@ abstract class DependencyManager<T extends Widget> extends LifeCycleManager<T> {
         value: mediaAccess ?? MediaAccess(ImagePicker()),
       ),
       Dependency<HiveRepository>(
-        create: () async {
-          final repo = HiveRepository(Hive);
-          await repo.init();
-          return repo;
-        },
+        create: () => HiveRepository(Hive),
         dispose: (element) => element.dispose(),
       ),
       Dependency<BackgroundTasksRepository>(
-        create: () async {
-          final repo = BackgroundTasksRepository(FlutterBackgroundService());
-          await repo.init();
-          return repo;
-        },
+        create: () => BackgroundTasksRepository(FlutterBackgroundService()),
         dispose: (element) => element.dispose(),
       ),
     ];
