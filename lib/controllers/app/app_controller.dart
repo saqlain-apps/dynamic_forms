@@ -34,7 +34,6 @@ class AppController extends Bloc<AppEvent, AppState> {
   StreamSubscription<List<ConnectivityResult>>? sub;
 
   void _init() {
-    getit.get<BackgroundTasksRepository>().init();
     add(const AppNetworkChangeEvent());
     sub = Connectivity().onConnectivityChanged.listen((event) {
       add(const AppNetworkChangeEvent());
@@ -51,6 +50,7 @@ class AppController extends Bloc<AppEvent, AppState> {
     try {
       emit(state.loading(event));
       await hive.init();
+      getit.get<BackgroundTasksRepository>().init();
       emit(state.copyWith(
         event: event,
         eventStatus: state.updateStatus(event, GenericStatus.success),

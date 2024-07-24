@@ -46,6 +46,7 @@ class BackgroundTasksRepository implements BaseRepository {
 
     await dependencyHandler.registerDependencies();
     final hiveRepo = getit.get<HiveRepository>();
+    await hiveRepo.init();
     Timer.periodic(const Duration(seconds: 30), (timer) async {
       if (await AppController.checkInternet()) {
         var forms = AppController.formsToBeUploaded(
